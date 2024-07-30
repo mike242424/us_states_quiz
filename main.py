@@ -3,10 +3,12 @@ from turtle import Screen, Turtle
 import pandas
 
 ALIGN = "center"
-FONT=("Arial", 12, "normal")
+FONT = ("Arial", 12, "normal")
 
 states_data = pandas.read_csv('50_states.csv')
 states = states_data['state'].to_list()
+guessed_states = []
+not_guessed_states = []
 correct = 0
 total = len(states)
 is_on = True
@@ -24,10 +26,14 @@ turtle.shape("blank_states_img.gif")
 while is_on:
     user_input = screen.textinput(title=f'{correct} / {total} '
                                         f'States Correct', prompt="What's another state's name?").title()
+
+    if user_input == 'Exit':
+        is_on = False
     if user_input in states:
         correct += 1
+        guessed_states.append(user_input)
         if correct == total:
-            break
+            is_on = False
         x_coord = states_data[states_data.state == user_input].x.iloc[0]
         y_coord = states_data[states_data.state == user_input].y.iloc[0]
         pen.goto(x=x_coord, y=y_coord)
@@ -35,5 +41,9 @@ while is_on:
     else:
         continue
 
-screen.exitonclick()
+for states in states:
+    if states not in guessed_states:
+        not_guessed_states.append(states)
 
+
+pandas.DataFrame(not_guessed_states).to_csv('missed_states.csv')
