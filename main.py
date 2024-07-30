@@ -26,6 +26,8 @@ while is_on:
                                         f'States Correct', prompt="What's another state's name?").title()
     if user_input in states:
         correct += 1
+        if correct == total:
+            break
         x_coord = states_data[states_data.state == user_input].x.iloc[0]
         y_coord = states_data[states_data.state == user_input].y.iloc[0]
         pen.goto(x=x_coord, y=y_coord)
