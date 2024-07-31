@@ -8,7 +8,6 @@ FONT = ("Arial", 12, "normal")
 states_data = pandas.read_csv('50_states.csv')
 states = states_data['state'].to_list()
 guessed_states = []
-not_guessed_states = []
 correct = 0
 total = len(states)
 is_on = True
@@ -41,9 +40,5 @@ while is_on:
     else:
         continue
 
-for states in states:
-    if states not in guessed_states:
-        not_guessed_states.append(states)
-
-
+not_guessed_states = [states for states in states if states not in guessed_states]
 pandas.DataFrame(not_guessed_states).to_csv('missed_states.csv')
